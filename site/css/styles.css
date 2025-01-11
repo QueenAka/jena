@@ -1,6 +1,9 @@
 :root {
-  --main: linear-gradient(158deg, rgba(112, 215, 177, 1) 0%, rgba(33, 156, 229, 1) 100%);
+  --main: linear-gradient(158deg, #70d7b1 0%, #219ce5 100%),
+    url("/media/glitter.gif");
   --background: #e4e0f3;
+  --danger: linear-gradient(158deg, #d77070 0%, #e52121 100%),
+    url("/media/glitter.gif");
 }
 
 * {
@@ -10,6 +13,7 @@
   font-family: sans-serif;
   text-align: center;
   color: black;
+  text-decoration: none;
 }
 
 nav {
@@ -18,11 +22,12 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
-  background: var(--main);
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 100;
+  background: var(--main);
+  background-blend-mode: overlay;
 }
 
 nav a {
@@ -57,15 +62,22 @@ button {
   font-size: 20px;
   color: white;
   border: none;
+  background-blend-mode: overlay;
 }
 
 main {
   width: 350px;
-  position: absolute;
+  position: fixed;
   top: 50px;
   left: 50%;
   transform: translateX(-50%);
-  height: calc(100% - 50px);
+  height: 52px;
+  padding-top: 5px;
+}
+
+hr {
+  color: black;
+  border: 1px white solid;
 }
 
 .popup-bg {
@@ -108,8 +120,14 @@ main {
 }
 
 .uploads {
-  width: 100%;
+  width: 350px;
+  height: calc(100% - 107px);
   text-align: left;
+  position: absolute;
+  top: 107px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: auto;
 }
 
 .uploads img {
@@ -118,4 +136,66 @@ main {
   border-radius: 10px;
   display: inline-block;
   margin: 5px;
+  object-fit: cover;
+  transition: none;
+}
+
+.danger {
+  background: var(--danger);
+}
+
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-color: #70d7b1 #0000;
+  border-radius: 50%;
+  animation: l16 1s infinite linear;
+  position: absolute;
+  margin: auto 150px;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+}
+
+.loader::before {
+  border-color: #219ce5 #0000;
+  animation: inherit;
+  animation-duration: .5s;
+  animation-direction: reverse;
+}
+
+.loader::after {
+  margin: 8px;
+}
+
+@keyframes l16 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.uploading {
+  filter: brightness(20%);
+}
+
+button:disabled {
+  filter: brightness(50%);
+  background-blend-mode: unset;
+}
+
+.error-img {
+  height: calc(100% - 50px);
+  width: 100%;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  object-fit: contain;
 }

@@ -23,7 +23,6 @@ const updateGitHubFile = async (newContent, commitMessage) => {
     const base64Content = Buffer.from(newContent).toString("base64");
 
     if (content === base64Content) {
-      console.log("Content is unchanged. No update required.");
       return;
     }
 
@@ -38,11 +37,6 @@ const updateGitHubFile = async (newContent, commitMessage) => {
       {
         headers: { Authorization: `token ${GITHUB_TOKEN}` },
       }
-    );
-
-    console.log(
-      "File updated successfully:",
-      updateResponse.data.commit.html_url
     );
   } catch (error) {
     console.error(
@@ -66,8 +60,6 @@ const uploadToImgur = async (imagePath) => {
         },
       }
     );
-
-    console.log("Image uploaded successfully:", response.data.data.link);
     fs.unlinkSync(imagePath);
     return response.data.data.link;
   } catch (error) {
@@ -75,6 +67,8 @@ const uploadToImgur = async (imagePath) => {
       "Error uploading image:",
       error.response?.data || error.message
     );
+    fs.unlinkSync(imagePath);
+    return { error: "Inavlid image type" };
   }
 };
 
@@ -106,6 +100,7 @@ app.post("/api/upload", upload.single("image"), (req, res) => {
   }
 
   uploadToImgur(`site/media/uploads/${req.file.filename}`).then((link) => {
+    if (link.error) return res.json({ error: link.error });
     res.json({
       message: "File uploaded successfully",
       link: link,
@@ -121,6 +116,7 @@ app.post("/api/upload", upload.single("image"), (req, res) => {
       path.join(__dirname, "site/media/uploads/uploads.json"),
       JSON.stringify(images)
     );
+    updateGitHubFile(JSON.stringify(images), "New upload");
   });
 });
 
@@ -141,5 +137,5 @@ app.use((req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("App running!");
+  console.log("App running!\nhttp://localhost:3000");
 });

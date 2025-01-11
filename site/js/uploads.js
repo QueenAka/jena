@@ -13,22 +13,15 @@ function uploadMedia() {
       popupBg.classList.add("popup-bg");
       popupBg.id = "popup";
       const body = document.body;
-      if (file.type.startsWith("image/")) {
-        const img = document.createElement("img");
-        img.src = url;
-        popup.appendChild(img);
-      } else if (file.type.startsWith("video/")) {
-        const video = document.createElement("video");
-        video.src = url;
-        video.controls = true;
-        popup.appendChild(video);
-      }
-
+      if (!file.type.startsWith("image/")) return alert("Invalid upload type");
+      const img = document.createElement("img");
+      img.src = url;
+      popup.appendChild(img);
       const upload = document.createElement("button");
       const cancel = document.createElement("button");
       upload.innerText = "Upload";
       cancel.innerText = "Cancel";
-
+      cancel.classList.add("danger");
       cancel.onclick = () => {
         popupBg.style.opacity = 0;
         setTimeout(() => {
@@ -39,7 +32,12 @@ function uploadMedia() {
       upload.onclick = () => {
         const formData = new FormData();
         formData.append("image", file);
-
+        upload.setAttribute("disabled", "true");
+        cancel.setAttribute("disabled", "true");
+        img.classList.add("uploading");
+        const loader = document.createElement("div");
+        loader.classList.add("loader");
+        popup.appendChild(loader);
         fetch("/api/upload", {
           method: "POST",
           body: formData,
@@ -49,8 +47,7 @@ function uploadMedia() {
             if (data.error) {
               alert(`Error: ${data.error}`);
             } else {
-              alert("File uploaded successfully!");
-              console.log("File Path:", data.filePath);
+              getUploads();
             }
             popupBg.style.opacity = 0;
             setTimeout(() => {
@@ -70,17 +67,29 @@ function uploadMedia() {
   };
 }
 
-fetch("/media/uploads/uploads.json")
-  .then((res) => res.text())
-  .then((data) => {
-    const images = JSON.parse(data);
-    images.uploads.forEach((img) => {
-      const imgElm = document.createElement("img");
-      imgElm.src = img;
-      imgElm.onclick = () => {
-        imgElm.requestFullscreen();
-      };
+function getUploads() {
+  fetch("/media/uploads/uploads.json")
+    .then((res) => res.text())
+    .then((data) => {
       const holder = document.getElementById("images");
-      holder.appendChild(imgElm);
+      holder.innerHTML = "";
+      const images = JSON.parse(data);
+      images.uploads.forEach((img) => {
+        const imgElm = document.createElement("img");
+        imgElm.src = img;
+        imgElm.onclick = () => {
+          imgElm.style.objectFit = "contain";
+          imgElm.requestFullscreen();
+          const resetObjectFit = () => {
+            if (!document.fullscreenElement) {
+              imgElm.style.objectFit = "";
+              document.removeEventListener("fullscreenchange", resetObjectFit);
+            }
+          };
+          document.addEventListener("fullscreenchange", resetObjectFit);
+        };
+        holder.appendChild(imgElm);
+      });
     });
-  });
+}
+getUploads();
