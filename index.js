@@ -8,7 +8,7 @@ const multer = require("multer");
 const GITHUB_TOKEN = process.env.GITHUB;
 const REPO_OWNER = "QueenAka";
 const REPO_NAME = "jena";
-const FILE_PATH = "media/uploads.txt";
+const FILE_PATH = "media/uploads/uploads.json";
 const BRANCH = "main";
 const updateGitHubFile = async (newContent, commitMessage) => {
   try {
