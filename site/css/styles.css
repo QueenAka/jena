@@ -199,3 +199,28 @@ button:disabled {
   left: 0;
   object-fit: contain;
 }
+
+.balloon {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: -100px;
+  transition: none;
+  background-size: cover;
+  background-position: center;
+  animation: floatUp 10s linear forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    bottom: -100px;
+  }
+
+  100% {
+    bottom: 100vh;
+  }
+}
+
+.uploads img {
+  background-color: rgba(0, 0, 0, 0.1);
+}

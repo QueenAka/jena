@@ -48,6 +48,7 @@ function uploadMedia() {
               alert(`Error: ${data.error}`);
             } else {
               getUploads();
+              balloons();
             }
             popupBg.style.opacity = 0;
             setTimeout(() => {
@@ -93,3 +94,27 @@ function getUploads() {
     });
 }
 getUploads();
+
+function balloons() {
+  const balloonCount = Math.floor(Math.random() * 100) + 100;
+  const body = document.body;
+  const balloonTypes = ["/media/balloon-green.png", "/media/balloon-blue.png"];
+
+  for (let i = 0; i < balloonCount; i++) {
+    const balloon = document.createElement("div");
+    balloon.classList.add("balloon");
+    balloon.style.backgroundImage = `url(${
+      balloonTypes[Math.floor(Math.random() * balloonTypes.length)]
+    })`;
+
+    const delay = Math.random() * 500;
+    const duration = Math.random() * 1000 + 1000;
+    balloon.style.left = `${Math.random() * 100}vw`;
+    balloon.style.animationDuration = `${duration}ms`;
+    balloon.style.animationDelay = `${delay}ms`;
+    body.appendChild(balloon);
+    setTimeout(() => {
+      balloon.remove();
+    }, delay + duration);
+  }
+}
