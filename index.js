@@ -1,14 +1,15 @@
 require("dotenv").config();
 const axios = require("axios");
 const express = require("express");
+const app = new express();
 const fs = require("fs");
 const path = require("path");
+const multer = require("multer");
 const GITHUB_TOKEN = process.env.GITHUB;
 const REPO_OWNER = "QueenAka";
 const REPO_NAME = "jena";
-const FILE_PATH = "media/uploads/meta.txt";
+const FILE_PATH = "media/uploads.txt";
 const BRANCH = "main";
-
 const updateGitHubFile = async (newContent, commitMessage) => {
   try {
     const fileDetailsResponse = await axios.get(
@@ -51,6 +52,94 @@ const updateGitHubFile = async (newContent, commitMessage) => {
   }
 };
 
-const newContent = "This is the updated content of the file!";
-const commitMessage = "Updated file content via API";
-updateGitHubFile(newContent, commitMessage);
+const uploadToImgur = async (imagePath) => {
+  const clientId = process.env.IMGUR_CLIENT;
+  const imageData = fs.readFileSync(imagePath, { encoding: "base64" });
+
+  try {
+    const response = await axios.post(
+      "https://api.imgur.com/3/image",
+      { image: imageData },
+      {
+        headers: {
+          Authorization: `Client-ID ${clientId}`,
+        },
+      }
+    );
+
+    console.log("Image uploaded successfully:", response.data.data.link);
+    fs.unlinkSync(imagePath);
+    return response.data.data.link;
+  } catch (error) {
+    console.error(
+      "Error uploading image:",
+      error.response?.data || error.message
+    );
+  }
+};
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, "site/media/uploads"));
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname));
+    },
+  }),
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only images are allowed"));
+    }
+  },
+});
+
+app.use(express.json());
+
+app.post("/api/upload", upload.single("image"), (req, res) => {
+  if (!req.file) {
+    return res
+      .status(400)
+      .json({ error: "No file uploaded or invalid file type" });
+  }
+
+  uploadToImgur(`site/media/uploads/${req.file.filename}`).then((link) => {
+    res.json({
+      message: "File uploaded successfully",
+      link: link,
+    });
+    const images = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, "site/media/uploads/uploads.json"),
+        "utf-8"
+      )
+    );
+    images.uploads.push(link);
+    fs.writeFileSync(
+      path.join(__dirname, "site/media/uploads/uploads.json"),
+      JSON.stringify(images)
+    );
+  });
+});
+
+app.use((err, req, res, next) => {
+  if (
+    err instanceof multer.MulterError ||
+    err.message === "Only images are allowed"
+  ) {
+    return res.status(400).json({ error: err.message });
+  }
+  next(err);
+});
+
+app.use(express.static(path.join(__dirname, "site"), { extensions: ["html"] }));
+
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, "404.html"));
+});
+
+app.listen(3000, () => {
+  console.log("App running!");
+});
