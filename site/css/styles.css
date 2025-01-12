@@ -6,6 +6,11 @@
     url("/media/glitter.gif");
 }
 
+body {
+  padding-top: 50px;
+  margin: 0;
+}
+
 * {
   user-select: none;
   transition: all 0.1s ease-in-out;
@@ -63,6 +68,10 @@ button {
   color: white;
   border: none;
   background-blend-mode: overlay;
+}
+
+button:active {
+  filter: brightness(80%);
 }
 
 main {
@@ -209,6 +218,11 @@ button:disabled {
   background-size: cover;
   background-position: center;
   animation: floatUp 10s linear forwards;
+  opacity: 0.8;
+}
+
+.balloon:hover {
+  opacity: 0.7;
 }
 
 @keyframes floatUp {
@@ -223,4 +237,17 @@ button:disabled {
 
 .uploads img {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.question {
+  width: 350px;
+  margin: auto;
+}
+
+.question button {
+  margin: 2.5px;
+}
+
+.wrong {
+  color: red;
 }

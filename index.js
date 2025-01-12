@@ -116,7 +116,7 @@ app.post("/api/upload", upload.single("image"), (req, res) => {
       path.join(__dirname, "site/media/uploads/uploads.json"),
       JSON.stringify(images)
     );
-    updateGitHubFile(JSON.stringify(images), "New upload");
+    //updateGitHubFile(JSON.stringify(images), "New upload");
   });
 });
 
