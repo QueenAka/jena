@@ -26,20 +26,21 @@
         width: 100%;
         height: 100%;
         background-size: 300px 300px;
-        cursor: grab;
+        cursor: pointer;
         border: 1px solid black;
-        touch-action: none;
+        touch-action: manipulation;
       }
     </style>
   </head>
   <body>
     <h1>Image Puzzle Game</h1>
-    <p>Drag and drop the pieces to solve the puzzle!</p>
+    <p>Tap two pieces to swap them and solve the puzzle!</p>
     <div id="puzzle-container"></div>
     <script>
       const imageSrc = "/media/icons/18.png"; // Change to your image
       const puzzleContainer = document.getElementById("puzzle-container");
       let pieces = [];
+      let selectedPiece = null;
 
       for (let i = 0; i < 9; i++) {
         const piece = document.createElement("div");
@@ -48,7 +49,6 @@
         piece.style.backgroundPosition = `-${(i % 3) * 100}px -${
           Math.floor(i / 3) * 100
         }px`;
-        piece.setAttribute("draggable", true);
         piece.dataset.index = i;
         pieces.push(piece);
       }
@@ -56,27 +56,24 @@
       pieces.sort(() => Math.random() - 0.5);
       pieces.forEach((piece) => puzzleContainer.appendChild(piece));
 
-      let dragged = null;
-
-      document.addEventListener("dragstart", (e) => {
+      puzzleContainer.addEventListener("click", (e) => {
         if (e.target.classList.contains("piece")) {
-          dragged = e.target;
-        }
-      });
+          if (!selectedPiece) {
+            selectedPiece = e.target;
+            selectedPiece.style.border = "2px solid red";
+          } else {
+            let tempPos = selectedPiece.style.backgroundPosition;
+            selectedPiece.style.backgroundPosition =
+              e.target.style.backgroundPosition;
+            e.target.style.backgroundPosition = tempPos;
 
-      document.addEventListener("dragover", (e) => {
-        e.preventDefault();
-      });
+            let tempIndex = selectedPiece.dataset.index;
+            selectedPiece.dataset.index = e.target.dataset.index;
+            e.target.dataset.index = tempIndex;
 
-      document.addEventListener("drop", (e) => {
-        if (e.target.classList.contains("piece")) {
-          let temp = e.target.style.backgroundPosition;
-          e.target.style.backgroundPosition = dragged.style.backgroundPosition;
-          dragged.style.backgroundPosition = temp;
-
-          let tempIndex = e.target.dataset.index;
-          e.target.dataset.index = dragged.dataset.index;
-          dragged.dataset.index = tempIndex;
+            selectedPiece.style.border = "1px solid black";
+            selectedPiece = null;
+          }
         }
       });
     </script>
