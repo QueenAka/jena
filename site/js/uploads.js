@@ -75,7 +75,7 @@ function getUploads() {
       const holder = document.getElementById("images");
       holder.innerHTML = "";
       const images = JSON.parse(data);
-      images.uploads.forEach((img) => {
+      images.forEach((img) => {
         const imgElm = document.createElement("img");
         imgElm.src = img;
         imgElm.onclick = () => {

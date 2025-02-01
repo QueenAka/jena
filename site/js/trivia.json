@@ -74,7 +74,7 @@
   {
     "q": "How does Jena like her Taco's?",
     "a": [
-      { "answer": true, "text": "Lettus, meat, and cheese" },
+      { "answer": true, "text": "Lettuce meat and cheese" },
       { "answer": false, "text": "Meat and cheese" },
       { "answer": false, "text": "Sour cream and cheese" },
       { "answer": false, "text": "Lettuce and meat" }

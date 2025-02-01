@@ -62,7 +62,7 @@ html {
 button {
   background: var(--main);
   border-radius: 20px;
-  width: 100%;
+  width: calc(100% - 2.5px);
   padding: 5px;
   font-size: 20px;
   color: white;
@@ -250,4 +250,40 @@ button:disabled {
 
 .wrong {
   color: red;
+}
+
+.progress {
+  width: 350px;
+  height: 10px;
+  border-radius: 5px;
+  margin: auto;
+  margin-top: 5px;
+  background: rgba(0, 0, 0, 0.2);
+  position: relative
+}
+
+.progress::after {
+  content: "";
+  width: var(--progress);
+  height: 10px;
+  border-radius: 5px;
+  background: var(--main);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease-in-out;
+  background-blend-mode: overlay;
+}
+
+#questions {
+  transition: opacity 0.1s ease-in-out;
+}
+
+spline-viewer {
+  height: calc(100% - 50px);
+    width: 100%;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    object-fit: contain;
 }

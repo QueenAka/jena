@@ -68,7 +68,7 @@ const uploadToImgur = async (imagePath) => {
       error.response?.data || error.message
     );
     fs.unlinkSync(imagePath);
-    return { error: "Inavlid image type" };
+    return { error: error.response?.data || error.message };
   }
 };
 
@@ -111,7 +111,7 @@ app.post("/api/upload", upload.single("image"), (req, res) => {
         "utf-8"
       )
     );
-    images.uploads.push(link);
+    images.push(link);
     fs.writeFileSync(
       path.join(__dirname, "site/media/uploads/uploads.json"),
       JSON.stringify(images)
