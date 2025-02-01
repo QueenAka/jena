@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Puzzle Game</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Arial, sans-serif;
+      }
+      #puzzle-container {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+        gap: 2px;
+        margin-top: 20px;
+      }
+      .piece {
+        width: 100px;
+        height: 100px;
+        background-size: 300px 300px;
+        cursor: grab;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Image Puzzle Game</h1>
+    <p>Drag and drop the pieces to solve the puzzle!</p>
+    <div id="puzzle-container"></div>
+    <script>
+      const imageSrc = "/media/icons/18.png"; // Change to your image
+      const puzzleContainer = document.getElementById("puzzle-container");
+      let pieces = [];
+
+      for (let i = 0; i < 9; i++) {
+        const piece = document.createElement("div");
+        piece.classList.add("piece");
+        piece.style.backgroundImage = `url(${imageSrc})`;
+        piece.style.backgroundPosition = `-${(i % 3) * 100}px -${
+          Math.floor(i / 3) * 100
+        }px`;
+        piece.setAttribute("draggable", true);
+        piece.dataset.index = i;
+        pieces.push(piece);
+      }
+
+      pieces.sort(() => Math.random() - 0.5);
+      pieces.forEach((piece) => puzzleContainer.appendChild(piece));
+
+      let dragged = null;
+
+      document.addEventListener("dragstart", (e) => {
+        if (e.target.classList.contains("piece")) {
+          dragged = e.target;
+        }
+      });
+
+      document.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      document.addEventListener("drop", (e) => {
+        if (e.target.classList.contains("piece")) {
+          let temp = e.target.style.backgroundPosition;
+          e.target.style.backgroundPosition = dragged.style.backgroundPosition;
+          dragged.style.backgroundPosition = temp;
+
+          let tempIndex = e.target.dataset.index;
+          e.target.dataset.index = dragged.dataset.index;
+          dragged.dataset.index = tempIndex;
+        }
+      });
+    </script>
+  </body>
+</html>
