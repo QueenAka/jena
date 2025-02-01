@@ -1,9 +1,9 @@
 :root {
   --main: linear-gradient(158deg, #70d7b1 0%, #219ce5 100%),
-    url("../media/glitter.gif");
+    url("/media/glitter.gif");
   --background: #e4e0f3;
   --danger: linear-gradient(158deg, #d77070 0%, #e52121 100%),
-    url("../media/glitter.gif");
+    url("/media/glitter.gif");
 }
 
 body {

@@ -1,4 +1,4 @@
-fetch("./js/trivia.json")
+fetch("/js/trivia.json")
   .then((res) => res.text())
   .then((data) => {
     let questions = JSON.parse(data);

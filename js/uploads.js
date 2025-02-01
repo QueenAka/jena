@@ -69,7 +69,7 @@ function uploadMedia() {
 }
 
 function getUploads() {
-  fetch("./media/uploads/uploads.json")
+  fetch("/media/uploads/uploads.json")
     .then((res) => res.text())
     .then((data) => {
       const holder = document.getElementById("images");
@@ -98,10 +98,7 @@ getUploads();
 function balloons() {
   const balloonCount = Math.floor(Math.random() * 100) + 100;
   const body = document.body;
-  const balloonTypes = [
-    "./media/balloon-green.png",
-    "./media/balloon-blue.png",
-  ];
+  const balloonTypes = ["/media/balloon-green.png", "/media/balloon-blue.png"];
 
   for (let i = 0; i < balloonCount; i++) {
     const balloon = document.createElement("div");
