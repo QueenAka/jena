@@ -1,4 +1,4 @@
-fetch("/js/trivia.json")
+fetch("./js/trivia.json")
   .then((res) => res.text())
   .then((data) => {
     let questions = JSON.parse(data);
@@ -81,7 +81,10 @@ function finishQuiz(questionsCorrect, questions) {
 function balloons() {
   const balloonCount = Math.floor(Math.random() * 100) + 100;
   const body = document.body;
-  const balloonTypes = ["/media/balloon-green.png", "/media/balloon-blue.png"];
+  const balloonTypes = [
+    "../media/balloon-green.png",
+    "../media/balloon-blue.png",
+  ];
 
   for (let i = 0; i < balloonCount; i++) {
     const balloon = document.createElement("div");
