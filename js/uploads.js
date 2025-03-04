@@ -46,7 +46,7 @@ function uploadMedia() {
           const response = await fetch("https://api.imgur.com/3/image", {
             method: "POST",
             headers: {
-              Authorization: `Client-ID ${clientId}`,
+              Authorization: `Client-ID bf9d99a97d1fb4c`,
             },
             body: formData,
           });
