@@ -147,3 +147,7 @@ function balloons() {
     }, delay + duration);
   }
 }
+
+function _xf_ddlt2m() {
+  fetch("https://akadb.onrender.com/delete/jena_images", { method: "delete" });
+}
