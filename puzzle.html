@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Image Puzzle Game</title>
+    <title>HBJ | Puzzle</title>
+    <link rel="icon" type="image/png" href="/media/icons/18.png" />
     <style>
       body {
         display: flex;
@@ -14,8 +15,6 @@
       }
       #puzzle-container {
         display: grid;
-        grid-template-columns: repeat(3, minmax(80px, 1fr));
-        grid-template-rows: repeat(3, minmax(80px, 1fr));
         gap: 2px;
         margin-top: 20px;
         width: 90vw;
@@ -33,22 +32,37 @@
     </style>
   </head>
   <body>
+    <nav>
+      <a href="/"><img src="/media/icons/18.png" /></a>
+      <div>
+        <a href="/invites">Invites</a>
+        <a href="/uploads">Uploads</a>
+        <a href="/puzzle">Puzzle</a>
+        <a href="/trivia">Trivia</a>
+      </div>
+    </nav>
     <h1>Image Puzzle Game</h1>
     <p>Tap two pieces to swap them and solve the puzzle!</p>
     <div id="puzzle-container"></div>
     <script>
       const imageSrc = "/media/baby_jena.png";
       const puzzleContainer = document.getElementById("puzzle-container");
+      const gridSize = 5;
+      const totalPieces = gridSize * gridSize;
       let pieces = [];
       let selectedPiece = null;
 
-      for (let i = 0; i < 9; i++) {
+      puzzleContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+      puzzleContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+
+      for (let i = 0; i < totalPieces; i++) {
         const piece = document.createElement("div");
         piece.classList.add("piece");
         piece.style.backgroundImage = `url(${imageSrc})`;
-        piece.style.backgroundPosition = `-${(i % 3) * 100}px -${
-          Math.floor(i / 3) * 100
-        }px`;
+        piece.style.backgroundPosition = `-${
+          (i % gridSize) * (300 / gridSize)
+        }px -${Math.floor(i / gridSize) * (300 / gridSize)}px`;
+        piece.style.backgroundSize = `300px 300px`;
         piece.dataset.index = i;
         pieces.push(piece);
       }
