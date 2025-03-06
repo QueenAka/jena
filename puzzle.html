@@ -41,9 +41,11 @@
         <a href="/trivia">Trivia</a>
       </div>
     </nav>
-    <h1>Image Puzzle Game</h1>
-    <p>Tap two pieces to swap them and solve the puzzle!</p>
-    <div id="puzzle-container"></div>
+    <main>
+      <h1>Image Puzzle Game</h1>
+      <p>Tap two pieces to swap them and solve the puzzle!</p>
+      <div id="puzzle-container"></div>
+    </main>
     <script>
       const imageSrc = "/media/baby_jena.png";
       const puzzleContainer = document.getElementById("puzzle-container");
@@ -74,7 +76,7 @@
         if (e.target.classList.contains("piece")) {
           if (!selectedPiece) {
             selectedPiece = e.target;
-            selectedPiece.style.border = "2px solid red";
+            selectedPiece.style.border = "1px solid red";
           } else {
             let tempPos = selectedPiece.style.backgroundPosition;
             selectedPiece.style.backgroundPosition =
