@@ -20,6 +20,7 @@
         width: 90vw;
         max-width: 300px;
         aspect-ratio: 1 / 1;
+        margin: auto;
       }
       .piece {
         width: 100%;
@@ -76,7 +77,9 @@
         if (e.target.classList.contains("piece")) {
           if (!selectedPiece) {
             selectedPiece = e.target;
-            selectedPiece.style.border = "1px solid red";
+            selectedPiece.style.border = "2px solid red";
+            selectedPiece.style.width = "calc(100% - 1px)";
+            selectedPiece.style.height = "calc(100% - 1px)";
           } else {
             let tempPos = selectedPiece.style.backgroundPosition;
             selectedPiece.style.backgroundPosition =
