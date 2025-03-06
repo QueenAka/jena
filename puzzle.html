@@ -78,8 +78,8 @@
           if (!selectedPiece) {
             selectedPiece = e.target;
             selectedPiece.style.border = "2px solid red";
-            selectedPiece.style.width = "calc(100% - 1px)";
-            selectedPiece.style.height = "calc(100% - 1px)";
+            selectedPiece.style.width = "calc(100% - 4px)";
+            selectedPiece.style.height = "calc(100% - 4px)";
           } else {
             let tempPos = selectedPiece.style.backgroundPosition;
             selectedPiece.style.backgroundPosition =
@@ -91,6 +91,8 @@
             e.target.dataset.index = tempIndex;
 
             selectedPiece.style.border = "1px solid black";
+            selectedPiece.style.width = "100%";
+            selectedPiece.style.height = "100%";
             selectedPiece = null;
           }
         }
